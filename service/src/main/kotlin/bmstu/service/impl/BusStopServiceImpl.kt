@@ -14,7 +14,7 @@ data class BusStopServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getAll() = busStopRepository.findAllByDistrict(TARGET_DISTRICT_BUS_STOP)
+    override fun getAll() = busStopRepository.findAll()
 
     override fun <T : Any> saveAll(list: List<T>) {
         TODO("Not yet implemented")

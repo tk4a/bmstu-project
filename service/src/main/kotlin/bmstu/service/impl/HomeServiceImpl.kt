@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class HomeServiceImpl(
-    val homeRepository: HomeRepository
+    private val homeRepository: HomeRepository
 ) : DtoService<HomeFromDb> {
     override fun <T> save(obj: T) {
 

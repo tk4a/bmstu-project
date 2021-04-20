@@ -1,34 +1,47 @@
 package bmstu.support
 
-import bmstu.configuration.Constraint.Companion.HOMES
-import bmstu.dto.Home
+import bmstu.dto.HomeToBusStopDistance
 import bmstu.dto.entity.BusStopFromDb
 import bmstu.dto.entity.HomeFromDb
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-fun getNearlyBusStop(home: HomeFromDb, busStop: BusStopFromDb) {
-    val homeX = requireNotNull(home.x)
-    val homeY = requireNotNull(home.y)
+/**
+ * Fun compute distance and return mapOf custom Home
+ */
+fun getNearlyBusStop(homes: List<HomeFromDb>, busStops: List<BusStopFromDb>): Map<Long, HomeToBusStopDistance> {
 
-    val busX = requireNotNull(busStop.x)
-    val busY = requireNotNull(busStop.y)
+    val resultSet = mutableMapOf<Long, HomeToBusStopDistance>()
 
-    val distance = sqrt((homeX - busX).pow(2.0) + (homeY - busY).pow(2.0))
+    busStops.forEach { busStopFromDb ->
 
-    val homeId = home.home_id
+        val busX = requireNotNull(busStopFromDb.x)
+        val busY = requireNotNull(busStopFromDb.y)
 
-    if (HOMES.containsKey(homeId)) {
-        HOMES[homeId]?.let {
-            if (requireNotNull(it.distance) > distance) {
-                it.busStop = requireNotNull(busStop.global_id)
-                it.distance = distance.toFloat()
-            }
-            HOMES[requireNotNull(homeId)] = it
+        homes.forEach { homeFromDb ->
+
+            val homeX = requireNotNull(homeFromDb.x)
+            val homeY = requireNotNull(homeFromDb.y)
+
+            val distance = sqrt((homeX - busX).pow(2.0) + (homeY - busY).pow(2.0))
+
+            val homeId = homeFromDb.home_id
+
+            if (resultSet.containsKey(homeId)) {
+                resultSet[homeId]?.let {
+                    if (requireNotNull(it.distance) > distance) {
+                        it.busStop = requireNotNull(busStopFromDb.global_id)
+                        it.distance = distance.toFloat()
+                    }
+                    resultSet[requireNotNull(homeId)] = it
+                }
+            } else resultSet[requireNotNull(homeId)] = HomeToBusStopDistance(
+                homeId,
+                requireNotNull(busStopFromDb.global_id),
+                distance.toFloat()
+            )
         }
-    } else HOMES[requireNotNull(homeId)] = Home(
-        homeId,
-        requireNotNull(busStop.global_id),
-        distance.toFloat()
-    )
+    }
+
+    return resultSet
 }

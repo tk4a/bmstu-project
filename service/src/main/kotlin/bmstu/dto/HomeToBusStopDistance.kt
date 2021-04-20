@@ -6,7 +6,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "home_distance")
-data class Home(
+data class HomeToBusStopDistance(
     @Id
     val homeId: Long,
     var busStop: Long,

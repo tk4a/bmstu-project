@@ -10,32 +10,35 @@ class CrossFunctions (
     ) {
 
     /**
-    Функция принимает на вход два поколения, проходит циклом по ним,
-    делает скрещивание поколений TO DO...
+    Функция принимает на вход два поколения, делает скрещивание методом двухточечного скрещивания
+     и возвращает скрещенное поколение
      **/
     fun crossGenerations(
         generation1: MutableList<LinkedList<BusStopWithWeight>>,
         generation2: MutableList<LinkedList<BusStopWithWeight>>
-    ): MutableList<LinkedList<BusStopWithWeight>>? {
-        val size = generation1.size
-        generation1.forEach { route1 ->
-            generation2.forEach { route2 ->
-                crossRoutes(route1, route2)?.let {
-                    if (routesBuilder.routeRating(it) > routesBuilder.routeRating(
-                            generation1.minByOrNull { gen1 -> routesBuilder.routeRating(gen1) }!!
-                        )) {
-                        generation1.add(it)
-                    }
-                }
-            }
+    ): MutableList<LinkedList<BusStopWithWeight>> {
+
+        val childrenGeneration = mutableListOf<LinkedList<BusStopWithWeight>>()
+        val random = Random()
+        var left = random.nextInt(generation1.size - 1)
+        var right = left + 2
+        if (right >= generation1.size - 2) right = left
+            .also { left-= 2 }
+        if (left < 2) {
+            left += 2
+            right += 2
         }
 
-        if (generation1.size > size) {
-            generation1.sortBy { routesBuilder.routeRating(it) }
-            while (generation1.size != size) generation1.removeFirst()
-            return generation1
+        (0..left).onEach {
+            childrenGeneration.add(generation1[it])
         }
-        return null
+        (left..right).onEach {
+            childrenGeneration.add(generation2[it])
+        }
+        (right until generation1.size).onEach {
+            childrenGeneration.add(generation1[it])
+        }
+        return childrenGeneration
     }
 }
 

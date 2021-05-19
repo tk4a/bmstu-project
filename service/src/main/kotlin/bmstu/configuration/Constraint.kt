@@ -10,6 +10,10 @@ class Constraint {
         const val ROUTE_SIZE = 10
         val TOP_3_GENERATIONS = mutableMapOf<MutableList<LinkedList<BusStopWithWeight>>, Float>()
         val TOP_3_ROUTES = mutableMapOf<LinkedList<BusStopWithWeight>, Float>()
-        const val GENERATION_CAPACITY = 10
+        val ALL_GENERATIONS = mutableListOf<MutableList<LinkedList<BusStopWithWeight>>>()
+        const val POPULATION_CAPACITY = 10 // Количество маршрутов в одной популяции
+        const val START_GENERATION_CAPACITY = 30 // Стартовое наполнение поколения
+        const val SELECTED_POPULATION = 10 // Количество отобранных популяций в поколении
+        const val SELECTED_ROUTES = 10
     }
 }

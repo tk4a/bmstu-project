@@ -31,7 +31,6 @@ class RoutesFunctions(
             population.sortBy { routesBuilder.routeRating(it) }
             (0 until population.size - POPULATION_CAPACITY).onEach { population.removeFirst() }
         }
-
     }
 
     private fun checkTopRoutes(route: LinkedList<BusStopWithWeight>) {
@@ -40,10 +39,10 @@ class RoutesFunctions(
         if (TOP_3_ROUTES.size > 3) {
             TOP_3_ROUTES.remove(TOP_3_ROUTES.toSortedMap( compareBy { routesBuilder.routeRating(it) }).firstKey())
             val top3routes = TOP_3_ROUTES.toSortedMap( compareBy { routesBuilder.routeRating(it) } )
-            FileSupport.MIN_MAX_DISTANCE_BUFFER.append("MIN = ${top3routes[top3routes.firstKey()].toString()}\n")
-            FileSupport.MIN_MAX_DISTANCE_BUFFER.append("MAX = ${top3routes[top3routes.lastKey()].toString()}\n")
+            FileSupport.MIN_MAX_DISTANCE_BUFFER.append("MIN TOP 3 = ${top3routes[top3routes.firstKey()].toString()}\n")
+            FileSupport.MIN_MAX_DISTANCE_BUFFER.append("MAX TOP 3 = ${top3routes[top3routes.lastKey()].toString()}\n\n")
             FileSupport.TOP_ROUTES_BUFFER.append("\n")
-            TOP_3_ROUTES.forEach { (t, u) -> FileSupport.TOP_ROUTES_BUFFER.append("RATING = $u\n") }
+            TOP_3_ROUTES.forEach { (_, u) -> FileSupport.TOP_ROUTES_BUFFER.append("RATING = $u\n") }
             println(TOP_3_ROUTES.values)
         }
     }

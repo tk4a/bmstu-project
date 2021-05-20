@@ -10,19 +10,19 @@ class CrossFunctions (
     ) {
 
     /**
-    Функция принимает на вход два поколения, делает скрещивание методом двухточечного скрещивания
-     и возвращает скрещенное поколение
+    Функция принимает на вход две популяции, делает скрещивание методом двухточечного скрещивания
+     и возвращает скрещенную популяцию
      **/
     fun crossGenerations(
-        generation1: MutableList<LinkedList<BusStopWithWeight>>,
-        generation2: MutableList<LinkedList<BusStopWithWeight>>
+        population1: MutableList<LinkedList<BusStopWithWeight>>,
+        population2: MutableList<LinkedList<BusStopWithWeight>>
     ): MutableList<LinkedList<BusStopWithWeight>> {
 
         val childrenGeneration = mutableListOf<LinkedList<BusStopWithWeight>>()
         val random = Random()
-        var left = random.nextInt(generation1.size - 1)
+        var left = random.nextInt(population1.size - 1)
         var right = left + 2
-        if (right >= generation1.size - 2) right = left
+        if (right >= population1.size - 2) right = left
             .also { left-= 2 }
         if (left < 2) {
             left += 2
@@ -30,13 +30,13 @@ class CrossFunctions (
         }
 
         (0..left).onEach {
-            childrenGeneration.add(generation1[it])
+            childrenGeneration.add(population1[it])
         }
         (left..right).onEach {
-            childrenGeneration.add(generation2[it])
+            childrenGeneration.add(population1[it])
         }
-        (right until generation1.size).onEach {
-            childrenGeneration.add(generation1[it])
+        (right until population1.size).onEach {
+            childrenGeneration.add(population1[it])
         }
         return childrenGeneration
     }

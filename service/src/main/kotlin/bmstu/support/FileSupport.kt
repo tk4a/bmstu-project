@@ -9,6 +9,7 @@ object FileSupport {
     val TOP_GENERATIONS_BUFFER = StringBuilder()
     val TOP_ROUTES_BUFFER = StringBuilder()
     val MIN_MAX_DISTANCE_BUFFER = StringBuilder()
+    val ALL_GENERATIONS_RATING = StringBuilder()
 
     fun writeTopRoutes() {
         val topRoutesFile = BufferedWriter(FileWriter(File("/Users/tryagain/Desktop/topRoutes.txt")))
@@ -25,6 +26,12 @@ object FileSupport {
     fun writeMinMaxDistance() {
         val minMaxDistance = BufferedWriter(FileWriter(File("/Users/tryagain/Desktop/minmax.txt")))
         minMaxDistance.write(MIN_MAX_DISTANCE_BUFFER.toString())
+        minMaxDistance.close()
+    }
+
+    fun writeAllGenRating() {
+        val minMaxDistance = BufferedWriter(FileWriter(File("/Users/tryagain/Desktop/allgencommonrating.txt")))
+        minMaxDistance.write(ALL_GENERATIONS_RATING.toString())
         minMaxDistance.close()
     }
 }

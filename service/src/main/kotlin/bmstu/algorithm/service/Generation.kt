@@ -13,7 +13,7 @@ class Generation(
     private val routesBuilder: RoutesBuilder
 ) {
 
-    fun commonRating() {
+    fun commonRating(): Float {
         var commonRating = 0.0F
         var count = 0
         ALL_GENERATIONS.forEach {
@@ -22,6 +22,7 @@ class Generation(
         }
         commonRating /= count
         FileSupport.ALL_GENERATIONS_RATING.append("COMMON RATING $commonRating\n")
+        return commonRating
     }
 
     /**

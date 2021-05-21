@@ -15,5 +15,6 @@ class Constraint {
         const val START_GENERATION_CAPACITY = 10 // Стартовое наполнение поколения
         const val SELECTED_POPULATION = 10 // Количество отобранных популяций в поколении
         const val SELECTED_ROUTES = 10
+        const val STOP_POINT = 0.70F
     }
 }

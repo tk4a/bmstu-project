@@ -8,6 +8,7 @@ import bmstu.algorithm.service.crossRoutes
 import bmstu.configuration.Constraint.Companion.ALL_GENERATIONS
 import bmstu.configuration.Constraint.Companion.POPULATION_CAPACITY
 import bmstu.configuration.Constraint.Companion.START_GENERATION_CAPACITY
+import bmstu.configuration.Constraint.Companion.STOP_POINT
 import bmstu.support.CoordinatesWriterJson
 import bmstu.support.FileSupport
 import org.springframework.boot.ApplicationArguments
@@ -19,7 +20,7 @@ import java.util.*
 class AppConfig(
     private val routesBuilder: RoutesBuilder,
     private val writerJson: CoordinatesWriterJson,
-    private val population: Generation,
+    private val generation: Generation,
     private val routesFunctions: RoutesFunctions,
     private val crossFunctions: CrossFunctions
 ) : ApplicationRunner {
@@ -30,19 +31,20 @@ class AppConfig(
 
     private fun startApplication() {
         createStartGeneration()
-        population.commonRating()
-        (0..20).onEach {
-            population.selection()
-            population.getTopPopulation()
-            if (it % 2 == 0 || it == 0) crossRoutesInnerPopulation()
-            population.selection()
-            population.getTopPopulation()
-            if (it % 5 == 0 && it != 0) crossPopulations()
-            population.commonRating()
+        generation.commonRating()
+        for (i in 0..20) {
+            generation.selection()
+            generation.getTopPopulation()
+            if (i % 2 == 0 || i == 0) crossRoutesInnerPopulation()
+            generation.selection()
+            generation.getTopPopulation()
+            if (i % 5 == 0 && i != 0) crossPopulations()
+            generation.commonRating()
             crossRoutesExternalPopulation()
-            population.selection()
-            population.getTopPopulation()
-            population.commonRating()
+            generation.selection()
+            generation.getTopPopulation()
+            generation.commonRating()
+            if (check()) break
         }
         writeReport()
     }
@@ -54,7 +56,7 @@ class AppConfig(
      */
     private fun createStartGeneration() {
         (0 until START_GENERATION_CAPACITY).onEach {
-            ALL_GENERATIONS.add (population.createPopulation(POPULATION_CAPACITY))
+            ALL_GENERATIONS.add (generation.createPopulation(POPULATION_CAPACITY))
         }
     }
 
@@ -124,6 +126,11 @@ class AppConfig(
             ALL_GENERATIONS.add(crossPopulation)
         }
     }
+
+    /**
+     * Функция проверяет выполнение условий остановки
+     */
+    private fun check(): Boolean = generation.commonRating() > STOP_POINT
 
     private fun writeReport() {
         FileSupport.writeTopGenerations()

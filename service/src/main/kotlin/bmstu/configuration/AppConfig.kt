@@ -2,13 +2,13 @@ package bmstu.configuration
 
 import bmstu.algorithm.service.CrossFunctions
 import bmstu.algorithm.service.Generation
-import bmstu.algorithm.service.RoutesBuilder
 import bmstu.algorithm.service.RoutesFunctions
 import bmstu.algorithm.service.crossRoutes
 import bmstu.configuration.Constraint.Companion.ALL_GENERATIONS
 import bmstu.configuration.Constraint.Companion.POPULATION_CAPACITY
 import bmstu.configuration.Constraint.Companion.START_GENERATION_CAPACITY
 import bmstu.configuration.Constraint.Companion.STOP_POINT
+import bmstu.configuration.Constraint.Companion.TOP_3_ROUTES
 import bmstu.support.CoordinatesWriterJson
 import bmstu.support.FileSupport
 import org.springframework.boot.ApplicationArguments
@@ -18,7 +18,6 @@ import java.util.*
 
 @Configuration
 class AppConfig(
-    private val routesBuilder: RoutesBuilder,
     private val writerJson: CoordinatesWriterJson,
     private val generation: Generation,
     private val routesFunctions: RoutesFunctions,
@@ -47,6 +46,7 @@ class AppConfig(
             if (check()) break
         }
         writeReport()
+        writeRouteToJson()
     }
 
     /**
@@ -137,5 +137,9 @@ class AppConfig(
         FileSupport.writeTopRoutes()
         FileSupport.writeMinMaxDistance()
         FileSupport.writeAllGenRating()
+    }
+
+    private fun writeRouteToJson() {
+        writerJson.writeRouteAsJson(listOf(TOP_3_ROUTES.keys.first().toList()))
     }
 }

@@ -1,0 +1,6 @@
+.gradle
+.idea
+/front_fx
+/gradle
+file1.txt
+gradlew

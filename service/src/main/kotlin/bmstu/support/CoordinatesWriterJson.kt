@@ -1,18 +1,33 @@
 package bmstu.support
 
-import bmstu.algorithm.dto.BusStopWithWeight
-import com.fasterxml.jackson.databind.ObjectMapper
+import bmstu.algorithm.dto.BusStopWithWeightDto
 import org.springframework.stereotype.Service
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 @Service
-class CoordinatesWriterJson(
-    private val objMapper: ObjectMapper
-) {
+class CoordinatesWriterJson {
 
-    fun writeRouteAsJson(route: List<List<BusStopWithWeight>>) {
+    fun List<BusStopWithWeightDto>.prepareToWrite() : List<BusStopWithWeightDto> {
+        val firstStop = this.first()
+        val lastStop = this.last()
+        val mainRoute = mutableListOf<BusStopWithWeightDto>()
+        this.forEach {
+            if (it != firstStop && it != lastStop) {
+                mainRoute.add(it)
+            }
+        }
+        mainRoute.sortBy { it.getDistance(firstStop) }
+        return mainRoute
+    }
+
+    fun BusStopWithWeightDto.getDistance(firstStop: BusStopWithWeightDto): Float =
+        sqrt((this.coordinates.x - firstStop.coordinates.x).pow(2) + (this.coordinates.y - firstStop.coordinates.y).pow(2))
+
+    fun writeRouteAsJson(route: List<List<BusStopWithWeightDto>>) {
 
         val roads = BufferedWriter(FileWriter(File("/Users/tryagain/Downloads/genetic/roads.json")))
         val busStopsWriter = BufferedWriter(FileWriter(File("/Users/tryagain/Downloads/genetic/test.json")))
@@ -20,14 +35,15 @@ class CoordinatesWriterJson(
         val wrapper = mutableListOf<List<List<Float>>>()
 
         route.forEach {
-            var x = 0.0F
-            var y = 0.0F
             val wrapper2 = mutableListOf<List<Float>>()
-            it.forEach {
-                x = ((((it.coordinates.x * 1000) % 1000) % 100) * 30) - 300
-                y = ((((it.coordinates.y * 1000) % 1000) % 100) * 10) - 300
-                wrapper2.add(mutableListOf(x, y))
+            val firstStop = it.first()
+            val lastStop = it.last()
+
+            wrapper2.add(mutableListOf(firstStop.prepareX(), firstStop.prepareY()))
+            it.prepareToWrite().forEach { busStop ->
+                wrapper2.add(mutableListOf(busStop.prepareX(), busStop.prepareY()))
             }
+            wrapper2.add(mutableListOf(lastStop.prepareX(), lastStop.prepareY()))
             wrapper.add(wrapper2)
         }
 
@@ -38,4 +54,7 @@ class CoordinatesWriterJson(
         roads.close()
         busStopsWriter.close()
     }
+
+    fun BusStopWithWeightDto.prepareX() = ((((this.coordinates.x * 1000) % 1000) % 100) * 30) - 300
+    fun BusStopWithWeightDto.prepareY() = ((((this.coordinates.y * 1000) % 1000) % 100) * 10) - 300
 }

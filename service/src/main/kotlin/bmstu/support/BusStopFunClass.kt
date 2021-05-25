@@ -3,7 +3,9 @@ package bmstu.support
 import bmstu.configuration.Constraint.Companion.TARGET_DISTRICT_BUS_STOP
 import bmstu.dto.HomeToBusStopDistance
 import bmstu.dto.entity.BusStopFromDb
+import bmstu.dto.entity.BusStopFromDbWithWeight
 import bmstu.service.impl.BusStopServiceImpl
+import bmstu.service.impl.BusStopWeightServiceImpl
 import bmstu.service.impl.RouteParsedServiceImpl
 import org.springframework.stereotype.Service
 
@@ -11,9 +13,13 @@ import org.springframework.stereotype.Service
 class BusStopFunClass(
     private val busStopServiceImpl: BusStopServiceImpl,
     private val routeFunClass: RouteFunClass,
-    private val routeParsedServiceImpl: RouteParsedServiceImpl
+    private val routeParsedServiceImpl: RouteParsedServiceImpl,
+    private val busStopFromDbWithWeightServiceImpl: BusStopWeightServiceImpl
 ) {
 
+    fun getAllBusStopWithWeight(): List<BusStopFromDbWithWeight> {
+        return busStopFromDbWithWeightServiceImpl.getAll()
+    }
     fun getTopBusStops(topList: Map<Long, HomeToBusStopDistance>) {
 
         val homesToBusStopsDistance = topList.values.map { it.busStop }.toList()

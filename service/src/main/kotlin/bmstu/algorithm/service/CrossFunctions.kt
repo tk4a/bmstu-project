@@ -1,6 +1,6 @@
 package bmstu.algorithm.service
 
-import bmstu.algorithm.dto.BusStopWithWeight
+import bmstu.algorithm.dto.BusStopWithWeightDto
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,11 +14,11 @@ class CrossFunctions (
      и возвращает скрещенную популяцию
      **/
     fun crossGenerations(
-        population1: MutableList<LinkedList<BusStopWithWeight>>,
-        population2: MutableList<LinkedList<BusStopWithWeight>>
-    ): MutableList<LinkedList<BusStopWithWeight>> {
+        population1: MutableList<LinkedList<BusStopWithWeightDto>>,
+        population2: MutableList<LinkedList<BusStopWithWeightDto>>
+    ): MutableList<LinkedList<BusStopWithWeightDto>> {
 
-        val childrenGeneration = mutableListOf<LinkedList<BusStopWithWeight>>()
+        val childrenGeneration = mutableListOf<LinkedList<BusStopWithWeightDto>>()
         val random = Random()
         var left = random.nextInt(population1.size - 1)
         var right = left + 2
@@ -43,17 +43,17 @@ class CrossFunctions (
 }
 
 fun crossRoutes(
-    parent1: LinkedList<BusStopWithWeight>,
-    parent2: LinkedList<BusStopWithWeight>
-): LinkedList<BusStopWithWeight>? {
+    parent1: LinkedList<BusStopWithWeightDto>,
+    parent2: LinkedList<BusStopWithWeightDto>
+): LinkedList<BusStopWithWeightDto>? {
 
-    var childrenRoute: LinkedList<BusStopWithWeight>? = null
+    var childrenRoute: LinkedList<BusStopWithWeightDto>? = null
 
     val firstBusStopParent = parent1.first
     val lastBusStopParent = parent1.last
 
     checkCrossBusStops(parent1, parent2).takeIf { it }?.let {
-        childrenRoute = LinkedList<BusStopWithWeight>()
+        childrenRoute = LinkedList<BusStopWithWeightDto>()
         var left: Int
         val random = Random()
 
@@ -89,8 +89,8 @@ fun crossRoutes(
 }
 
 private fun checkCrossBusStops(
-    parent1: LinkedList<BusStopWithWeight>,
-    parent2: LinkedList<BusStopWithWeight>
+    parent1: LinkedList<BusStopWithWeightDto>,
+    parent2: LinkedList<BusStopWithWeightDto>
 ): Boolean {
     parent1.forEachIndexed { index, busStopWithWeight ->
         if (index != 0 && index != parent1.size - 1) {

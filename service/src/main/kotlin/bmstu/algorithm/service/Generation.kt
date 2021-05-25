@@ -1,6 +1,6 @@
 package bmstu.algorithm.service
 
-import bmstu.algorithm.dto.BusStopWithWeight
+import bmstu.algorithm.dto.BusStopWithWeightDto
 import bmstu.configuration.Constraint.Companion.ALL_GENERATIONS
 import bmstu.configuration.Constraint.Companion.SELECTED_POPULATION
 import bmstu.configuration.Constraint.Companion.TOP_3_POPULATION
@@ -37,10 +37,10 @@ class Generation(
             }
     }
 
-    fun createPopulation(capacity: Int): MutableList<LinkedList<BusStopWithWeight>> {
+    fun createPopulation(capacity: Int): MutableList<LinkedList<BusStopWithWeightDto>> {
 
         val randomBusStops = routesBuilder.getRandomBusStops()
-        val generation = mutableListOf(LinkedList<BusStopWithWeight>())
+        val generation = mutableListOf(LinkedList<BusStopWithWeightDto>())
         (0 until capacity).onEach {
             generation.add(routesBuilder.createRandomRoute(
                 randomBusStops.first(),
@@ -64,7 +64,7 @@ class Generation(
         TOP_3_POPULATION.clear()
     }
 
-    fun populationRating(generation: MutableList<LinkedList<BusStopWithWeight>>): Float {
+    fun populationRating(generation: MutableList<LinkedList<BusStopWithWeightDto>>): Float {
         var rating = 0.0F
         generation.forEach {
             rating += routesBuilder.routeRating(it)

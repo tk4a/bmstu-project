@@ -1,6 +1,5 @@
 package bmstu.service.impl
 
-import bmstu.configuration.Constraint.Companion.TARGET_DISTRICT_BUS_STOP
 import bmstu.dto.entity.BusStopFromDb
 import bmstu.repository.BusStopRepository
 import bmstu.service.DtoService

@@ -1,6 +1,6 @@
 package bmstu.algorithm.service
 
-import bmstu.algorithm.dto.BusStopWithWeight
+import bmstu.algorithm.dto.BusStopWithWeightDto
 import bmstu.configuration.Constraint.Companion.POPULATION_CAPACITY
 import bmstu.configuration.Constraint.Companion.TOP_3_ROUTES
 import bmstu.support.FileSupport
@@ -16,7 +16,7 @@ class RoutesFunctions(
      * Функция заполняет топ 3 маршрута, если коллекция пустая, если в ней есть значения, то проверяет что
      * минимальное значение в коллекции больше текущего рейтинга, если это не истина, тогда минимальное значение заменяется на текущее
      */
-    fun fillTopRoutes(population: MutableList<LinkedList<BusStopWithWeight>>) {
+    fun fillTopRoutes(population: MutableList<LinkedList<BusStopWithWeightDto>>) {
         population.forEach {
             if (TOP_3_ROUTES.size < 3) {
                 TOP_3_ROUTES[it] = routesBuilder.routeRating(it).also { rating ->
@@ -26,14 +26,14 @@ class RoutesFunctions(
         }
     }
 
-    fun selected(population: MutableList<LinkedList<BusStopWithWeight>>) {
+    fun selected(population: MutableList<LinkedList<BusStopWithWeightDto>>) {
         if (population.size > POPULATION_CAPACITY) {
             population.sortBy { routesBuilder.routeRating(it) }
             (0 until population.size - POPULATION_CAPACITY).onEach { population.removeFirst() }
         }
     }
 
-    private fun checkTopRoutes(route: LinkedList<BusStopWithWeight>) {
+    private fun checkTopRoutes(route: LinkedList<BusStopWithWeightDto>) {
         val rating = routesBuilder.routeRating(route)
         TOP_3_ROUTES.values.filter { it < rating }.forEach { _ -> TOP_3_ROUTES[route] = rating }
         if (TOP_3_ROUTES.size > 3) {

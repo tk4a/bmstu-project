@@ -1,6 +1,6 @@
 package bmstu.algorithm.dto
 
-data class BusStopWithWeight(
+data class BusStopWithWeightDto(
     val id: Long,
     val name: String,
     val coordinates: Coordinate,

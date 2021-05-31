@@ -13,7 +13,7 @@ class CrossFunctions (
     Функция принимает на вход две популяции, делает скрещивание методом двухточечного скрещивания
      и возвращает скрещенную популяцию
      **/
-    fun crossGenerations(
+    fun crossPopulation(
         population1: MutableList<LinkedList<BusStopWithWeightDto>>,
         population2: MutableList<LinkedList<BusStopWithWeightDto>>
     ): MutableList<LinkedList<BusStopWithWeightDto>> {

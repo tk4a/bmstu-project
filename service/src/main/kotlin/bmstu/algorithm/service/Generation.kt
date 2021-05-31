@@ -42,7 +42,7 @@ class Generation(
         val randomBusStops = routesBuilder.getRandomBusStops()
         val generation = mutableListOf(LinkedList<BusStopWithWeightDto>())
         (0 until capacity).onEach {
-            generation.add(routesBuilder.createRandomRoute(
+            generation.add(routesBuilder.createRoute(
                 randomBusStops.first(),
                 randomBusStops.last(),
                 randomBusStops

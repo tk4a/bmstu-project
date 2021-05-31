@@ -13,9 +13,8 @@ class BusStopWeightServiceImpl(
         TODO("Not yet implemented")
     }
 
-    override fun getOne(id: Long): BusStopFromDbWithWeight {
-        TODO("Not yet implemented")
-    }
+    override fun getOne(id: Long): BusStopFromDbWithWeight =
+        busStopWeightRepo.getOne(id)
 
     override fun getAll() = busStopWeightRepo.findAll()
 

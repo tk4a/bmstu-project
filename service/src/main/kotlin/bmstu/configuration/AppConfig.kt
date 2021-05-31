@@ -5,10 +5,13 @@ import bmstu.algorithm.service.Generation
 import bmstu.algorithm.service.RoutesFunctions
 import bmstu.algorithm.service.crossRoutes
 import bmstu.configuration.Constraint.Companion.ALL_GENERATIONS
+import bmstu.configuration.Constraint.Companion.PATH_FOR_START_ROUTES
+import bmstu.configuration.Constraint.Companion.PATH_FOR_START_STOPS
+import bmstu.configuration.Constraint.Companion.PATH_FOR_TOP_ROUTES
+import bmstu.configuration.Constraint.Companion.PATH_FOR_TOP_STOPS
 import bmstu.configuration.Constraint.Companion.POPULATION_CAPACITY
 import bmstu.configuration.Constraint.Companion.START_GENERATION_CAPACITY
 import bmstu.configuration.Constraint.Companion.STOP_POINT
-import bmstu.configuration.Constraint.Companion.TOP_3_ROUTES
 import bmstu.support.CoordinatesWriterJson
 import bmstu.support.FileSupport
 import org.springframework.boot.ApplicationArguments
@@ -29,7 +32,8 @@ class AppConfig(
     }
 
     private fun startApplication() {
-        createStartGeneration()
+        createGeneration()
+        writeStartRoutes()
         generation.commonRating()
         for (i in 0..20) {
             generation.selection()
@@ -54,7 +58,7 @@ class AppConfig(
      * зависит от двух констант 1) START_GENERATION_CAPACITY - Стартовое наполнение поколения
      *                          2) POPULATION_CAPACITY - Количество маршрутов в одной популяции
      */
-    private fun createStartGeneration() {
+    private fun createGeneration() {
         (0 until START_GENERATION_CAPACITY).onEach {
             ALL_GENERATIONS.add (generation.createPopulation(POPULATION_CAPACITY))
         }
@@ -121,8 +125,8 @@ class AppConfig(
      */
     private fun crossPopulations() {
         (0 until ALL_GENERATIONS.size).onEach {
-            val crossPopulation = if (it + 1 < ALL_GENERATIONS.size) crossFunctions.crossGenerations(ALL_GENERATIONS[it], ALL_GENERATIONS[it + 1])
-            else crossFunctions.crossGenerations(ALL_GENERATIONS[it], ALL_GENERATIONS[0])
+            val crossPopulation = if (it + 1 < ALL_GENERATIONS.size) crossFunctions.crossPopulation(ALL_GENERATIONS[it], ALL_GENERATIONS[it + 1])
+            else crossFunctions.crossPopulation(ALL_GENERATIONS[it], ALL_GENERATIONS[0])
             ALL_GENERATIONS.add(crossPopulation)
         }
     }
@@ -139,7 +143,20 @@ class AppConfig(
         FileSupport.writeAllGenRating()
     }
 
+    private fun writeStartRoutes() {
+        val allRoutes = ALL_GENERATIONS.flatten()
+        writerJson.writeRouteAsJson(
+            route = listOf(allRoutes.first(), allRoutes[2]),
+            pathRoads = PATH_FOR_START_ROUTES,
+            pathBusStops = PATH_FOR_START_STOPS
+        )
+    }
+
     private fun writeRouteToJson() {
-        writerJson.writeRouteAsJson(listOf(TOP_3_ROUTES.keys.first().toList()))
+        writerJson.writeRouteAsJson(
+            route = routesFunctions.fillSetAllRoutes().toList(),
+            pathRoads = PATH_FOR_TOP_ROUTES,
+            pathBusStops = PATH_FOR_TOP_STOPS
+        )
     }
 }

@@ -40,18 +40,20 @@ class RoutesBuilder(
         }
     }
 
-    fun createRandomRoute(
+    fun createRoute(
         start: BusStopWithWeightDto,
         finish: BusStopWithWeightDto,
         busStopDtos: List<BusStopWithWeightDto>
     ): LinkedList<BusStopWithWeightDto> {
-        val randomRoute = LinkedList<BusStopWithWeightDto>()
-        randomRoute.add(start)
-        busStopDtos.shuffled().take(ROUTE_SIZE).forEach {
-            if (!(it == start && it == finish)) randomRoute.add(it)
+        val route = LinkedList<BusStopWithWeightDto>()
+        route.add(start)
+        busStopDtos.shuffled()
+            .take(ROUTE_SIZE).forEach {
+            if (!(it == start && it == finish)) route.add(it)
         }
-        randomRoute.add(finish)
-        return randomRoute
+        route.add(finish)
+        println(route.size)
+        return route
     }
 
     fun routeRating(route: List<BusStopWithWeightDto>): Float {

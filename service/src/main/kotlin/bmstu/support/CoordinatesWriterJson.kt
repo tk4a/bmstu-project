@@ -27,14 +27,15 @@ class CoordinatesWriterJson {
     fun BusStopWithWeightDto.getDistance(firstStop: BusStopWithWeightDto): Float =
         sqrt((this.coordinates.x - firstStop.coordinates.x).pow(2) + (this.coordinates.y - firstStop.coordinates.y).pow(2))
 
-    fun writeRouteAsJson(route: List<List<BusStopWithWeightDto>>) {
+    fun writeRouteAsJson(route: List<List<BusStopWithWeightDto>>, pathRoads: String, pathBusStops: String) {
 
-        val roads = BufferedWriter(FileWriter(File("/Users/tryagain/Downloads/genetic/roads.json")))
-        val busStopsWriter = BufferedWriter(FileWriter(File("/Users/tryagain/Downloads/genetic/test.json")))
+        val roads = BufferedWriter(FileWriter(File(pathRoads)))
+        val busStopsWriter = BufferedWriter(FileWriter(File(pathBusStops)))
 
         val wrapper = mutableListOf<List<List<Float>>>()
 
         route.forEach {
+            println("size route for picture ${it.size}")
             val wrapper2 = mutableListOf<List<Float>>()
             val firstStop = it.first()
             val lastStop = it.last()

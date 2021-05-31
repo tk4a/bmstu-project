@@ -1,6 +1,7 @@
 package bmstu.algorithm.service
 
 import bmstu.algorithm.dto.BusStopWithWeightDto
+import bmstu.configuration.Constraint.Companion.ALL_ROUTES_LOGS
 import bmstu.configuration.Constraint.Companion.POPULATION_CAPACITY
 import bmstu.configuration.Constraint.Companion.TOP_3_ROUTES
 import bmstu.support.FileSupport
@@ -9,7 +10,8 @@ import java.util.*
 
 @Service
 class RoutesFunctions(
-    private val routesBuilder: RoutesBuilder
+    private val routesBuilder: RoutesBuilder,
+    private val generation: Generation
 ) {
 
     /**
@@ -43,7 +45,16 @@ class RoutesFunctions(
             FileSupport.MIN_MAX_DISTANCE_BUFFER.append("MAX TOP 3 = ${top3routes[top3routes.lastKey()].toString()}\n\n")
             FileSupport.TOP_ROUTES_BUFFER.append("\n")
             TOP_3_ROUTES.forEach { (_, u) -> FileSupport.TOP_ROUTES_BUFFER.append("RATING = $u\n") }
-            println(TOP_3_ROUTES.values)
+            ALL_ROUTES_LOGS.add(TOP_3_ROUTES.keys.toList())
         }
+    }
+
+    fun fillSetAllRoutes(): MutableSet<LinkedList<BusStopWithWeightDto>> {
+        ALL_ROUTES_LOGS.toSortedSet(compareBy { generation.populationRating(it.toMutableList()) })
+//        val firstTopRoute = ALL_ROUTES_LOGS[(ALL_ROUTES_LOGS.size / 2) / 2].last()
+        val lastTopRoute = ALL_ROUTES_LOGS.last().last()
+        val middleTopRoute = ALL_ROUTES_LOGS[ALL_ROUTES_LOGS.size / 2].last()
+        return mutableSetOf(middleTopRoute, lastTopRoute)
+
     }
 }

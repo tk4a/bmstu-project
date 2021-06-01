@@ -17,6 +17,9 @@ data class RouteFlight(
     val tripId: String?
 ) {
     constructor() : this(
-        null, null,null, null
+        null,
+        null,
+        null,
+        null
     )
 }

@@ -1,10 +1,10 @@
 package bmstu.dto.entity
 
+import java.sql.Time
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
-import java.sql.Time
-import javax.persistence.Column
 
 @Entity
 @Table(name = "flight_schedule_parsed")

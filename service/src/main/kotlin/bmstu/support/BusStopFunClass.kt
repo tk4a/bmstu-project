@@ -23,11 +23,11 @@ class BusStopFunClass(
     fun getTopBusStops(topList: Map<Long, HomeToBusStopDistance>) {
 
         val homesToBusStopsDistance = topList.values.map { it.busStop }.toList()
-        val setHomesToBusStops = topList.values.map { it.busStop } .toSet()
+        val setHomesToBusStops = topList.values.map { it.busStop }.toSet()
         val busStops = mutableMapOf<BusStopFromDb, Int>()
 
         busStopServiceImpl.getAll().forEach { busStopFromDb ->
-            if(setHomesToBusStops.contains(busStopFromDb.global_id)) busStops[busStopFromDb] = 0
+            if (setHomesToBusStops.contains(busStopFromDb.global_id)) busStops[busStopFromDb] = 0
         }
 
         homesToBusStopsDistance.forEach { home ->
@@ -45,7 +45,6 @@ class BusStopFunClass(
             println(busStop)
             println("COUNT => $count")
         }
-
     }
 
     fun findAllBusStopByDistrict(district: String): Set<BusStopFromDb> {
@@ -109,6 +108,5 @@ class BusStopFunClass(
         println(allBusStopsByRouteName.size)
 
         return allBusStopsByRouteName
-
     }
 }

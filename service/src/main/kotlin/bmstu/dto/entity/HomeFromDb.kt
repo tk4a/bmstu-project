@@ -19,5 +19,6 @@ data class HomeFromDb(
         null,
         null,
         null,
-        null)
+        null
+    )
 }

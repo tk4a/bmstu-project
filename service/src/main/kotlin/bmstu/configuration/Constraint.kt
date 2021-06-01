@@ -1,13 +1,13 @@
 package bmstu.configuration
 
 import bmstu.algorithm.dto.BusStopWithWeightDto
-import java.util.*
+import java.util.LinkedList
 
 class Constraint {
     companion object {
         const val TARGET_DISTRICT_HOME = "муниципальный округ Фили-Давыдково"
         const val TARGET_DISTRICT_BUS_STOP = "район Фили-Давыдково"
-        const val ROUTE_SIZE = 15
+        const val ROUTE_SIZE = 20
         val TOP_3_POPULATION = mutableMapOf<MutableList<LinkedList<BusStopWithWeightDto>>, Float>()
         val TOP_3_ROUTES = mutableMapOf<LinkedList<BusStopWithWeightDto>, Float>()
         val ALL_GENERATIONS = mutableListOf<MutableList<LinkedList<BusStopWithWeightDto>>>()
@@ -19,6 +19,6 @@ class Constraint {
         const val PATH_FOR_TOP_STOPS = "/Users/tryagain/Downloads/genetic/test.json"
         const val PATH_FOR_START_ROUTES = "/Users/tryagain/Desktop/genetic/roads.json"
         const val PATH_FOR_START_STOPS = "/Users/tryagain/Desktop/genetic/test.json"
-        const val STOP_POINT = 0.90F
+        const val STOP_POINT = 0.60F
     }
 }

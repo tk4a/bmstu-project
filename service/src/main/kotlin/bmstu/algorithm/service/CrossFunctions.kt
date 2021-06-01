@@ -2,15 +2,16 @@ package bmstu.algorithm.service
 
 import bmstu.algorithm.dto.BusStopWithWeightDto
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.LinkedList
+import java.util.Random
 
 @Service
-class CrossFunctions (
+class CrossFunctions(
     private val routesBuilder: RoutesBuilder
-    ) {
+) {
 
     /**
-    Функция принимает на вход две популяции, делает скрещивание методом двухточечного скрещивания
+     Функция принимает на вход две популяции, делает скрещивание методом двухточечного скрещивания
      и возвращает скрещенную популяцию
      **/
     fun crossPopulation(
@@ -23,7 +24,7 @@ class CrossFunctions (
         var left = random.nextInt(population1.size - 1)
         var right = left + 2
         if (right >= population1.size - 2) right = left
-            .also { left-= 2 }
+            .also { left -= 2 }
         if (left < 2) {
             left += 2
             right += 2
@@ -75,8 +76,9 @@ fun crossRoutes(
         var counter = 0
 
         parent2.forEach { busStop ->
-            if (!requireNotNull(childrenRoute).contains(busStop) && busStop != firstBusStopParent
-                && busStop != lastBusStopParent) {
+            if (!requireNotNull(childrenRoute).contains(busStop) && busStop != firstBusStopParent &&
+                busStop != lastBusStopParent
+            ) {
                 if (counter < 3) childrenRoute?.addLast(busStop) else childrenRoute?.addFirst(busStop)
             }
             counter++

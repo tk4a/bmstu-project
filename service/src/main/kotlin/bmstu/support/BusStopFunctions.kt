@@ -1,9 +1,11 @@
 package bmstu.support
 
-import bmstu.dto.entity.*
+import bmstu.dto.entity.BusStopFromDb
+import bmstu.dto.entity.FlightScheduleParsed
+import bmstu.dto.entity.RouteFlight
+import bmstu.dto.entity.RouteParsedFromDb
 import bmstu.service.impl.RouteFlightServiceImpl
 import bmstu.service.impl.RouteParsedServiceImpl
-
 
 fun getRouteFlightByTripId(
     flightScheduleList: List<FlightScheduleParsed>,

@@ -22,5 +22,4 @@ data class BusStopServiceImpl(
     override fun getOne(id: Long): BusStopFromDb {
         return busStopRepository.getOne(id)
     }
-
 }

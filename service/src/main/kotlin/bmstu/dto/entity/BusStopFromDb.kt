@@ -6,7 +6,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "bus_stop_details")
-data class BusStopFromDb (
+data class BusStopFromDb(
     @Id
     val global_id: Long?,
     val street: String?,
@@ -31,5 +31,6 @@ data class BusStopFromDb (
         null,
         null,
         null,
-        null)
+        null
+    )
 }

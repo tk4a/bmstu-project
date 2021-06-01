@@ -6,7 +6,7 @@ import bmstu.configuration.Constraint.Companion.SELECTED_POPULATION
 import bmstu.configuration.Constraint.Companion.TOP_3_POPULATION
 import bmstu.support.FileSupport
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.LinkedList
 
 @Service
 class Generation(
@@ -42,18 +42,20 @@ class Generation(
         val randomBusStops = routesBuilder.getRandomBusStops()
         val generation = mutableListOf(LinkedList<BusStopWithWeightDto>())
         (0 until capacity).onEach {
-            generation.add(routesBuilder.createRoute(
-                randomBusStops.first(),
-                randomBusStops.last(),
-                randomBusStops
-            ))
+            generation.add(
+                routesBuilder.createRoute(
+                    randomBusStops.first(),
+                    randomBusStops.last(),
+                    randomBusStops
+                )
+            )
         }
         generation.removeFirst()
         return generation
     }
 
     fun getTopPopulation() {
-        ALL_GENERATIONS.sortBy { populationRating(it)  }
+        ALL_GENERATIONS.sortBy { populationRating(it) }
         ALL_GENERATIONS.takeLast(3).forEach {
             TOP_3_POPULATION[it] = populationRating(it)
         }

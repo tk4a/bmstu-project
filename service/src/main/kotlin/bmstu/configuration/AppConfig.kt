@@ -17,7 +17,7 @@ import bmstu.support.FileSupport
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Configuration
-import java.util.*
+import java.util.Random
 
 @Configuration
 class AppConfig(
@@ -33,7 +33,7 @@ class AppConfig(
 
     private fun startApplication() {
         createGeneration()
-        writeStartRoutes()
+//        writeStartRoutes()
         generation.commonRating()
         for (i in 0..20) {
             generation.selection()
@@ -51,6 +51,7 @@ class AppConfig(
         }
         writeReport()
         writeRouteToJson()
+//        testRouteWriter()
     }
 
     /**
@@ -60,7 +61,7 @@ class AppConfig(
      */
     private fun createGeneration() {
         (0 until START_GENERATION_CAPACITY).onEach {
-            ALL_GENERATIONS.add (generation.createPopulation(POPULATION_CAPACITY))
+            ALL_GENERATIONS.add(generation.createPopulation(POPULATION_CAPACITY))
         }
     }
 
@@ -116,7 +117,6 @@ class AppConfig(
             routesFunctions.selected(population1)
             routesFunctions.fillTopRoutes(population1)
         }
-
     }
 
     /**

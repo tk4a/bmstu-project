@@ -11,7 +11,6 @@ class HomeServiceImpl(
     private val homeRepository: HomeRepository
 ) : DtoService<HomeFromDb> {
     override fun <T> save(obj: T) {
-
     }
 
     override fun getAll() = homeRepository.findAllByDistrict(TARGET_DISTRICT_HOME)

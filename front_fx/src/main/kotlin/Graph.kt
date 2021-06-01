@@ -3,9 +3,7 @@ import javafx.application.Application
 import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.Scene
-import javafx.scene.layout.FlowPane
 import javafx.scene.paint.Color
-import javafx.scene.shape.Polygon
 import javafx.scene.shape.Rectangle
 import javafx.stage.Stage
 import java.nio.file.Files
@@ -40,7 +38,7 @@ class Graph : Application() {
 
         while (xHome != null) {
             yHome = homeReader.readLine()
-            val xOnMap = ((((xHome.toDouble() * 1000) % 1000) % 100)  * 30)
+            val xOnMap = ((((xHome.toDouble() * 1000) % 1000) % 100) * 30)
             val yOnMap = ((((yHome.toDouble() * 1000) % 1000) % 100) * 10) - 300
             val homeRectangle = Rectangle(7.0, 7.0, Color.BLUE)
             homeRectangle.x = xOnMap
@@ -56,7 +54,6 @@ class Graph : Application() {
         val myScene = Scene(Group(nodes), 1500.0, 1200.0)
         primaryStage?.scene = myScene
         primaryStage?.show()
-
     }
 
     fun s() {

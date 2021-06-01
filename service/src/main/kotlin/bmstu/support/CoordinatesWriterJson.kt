@@ -5,13 +5,14 @@ import org.springframework.stereotype.Service
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import java.util.LinkedList
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 @Service
 class CoordinatesWriterJson {
 
-    fun List<BusStopWithWeightDto>.prepareToWrite() : List<BusStopWithWeightDto> {
+    fun List<BusStopWithWeightDto>.prepareToWrite(): List<BusStopWithWeightDto> {
         val firstStop = this.first()
         val lastStop = this.last()
         val mainRoute = mutableListOf<BusStopWithWeightDto>()
@@ -22,6 +23,39 @@ class CoordinatesWriterJson {
         }
         mainRoute.sortBy { it.getDistance(firstStop) }
         return mainRoute
+    }
+
+    fun List<BusStopWithWeightDto>.prepareToWriteForFinalRoute(): List<BusStopWithWeightDto?> {
+        val resultRoute = LinkedList<BusStopWithWeightDto>()
+        val first = this.first()
+        val last = this.last()
+        val copyRoute = mutableListOf<BusStopWithWeightDto>()
+        this.forEach {
+            if (it != first && it != last) copyRoute.add(it)
+        }
+        resultRoute.add(first)
+        (0 until copyRoute.size).onEach {
+            var minDist = 0.0F
+            var currentStop = if (it == 0) first else copyRoute[it]
+            var nextStop: BusStopWithWeightDto?
+            (0 until copyRoute.size - 1).onEach { inner ->
+                nextStop = if (it == 0) copyRoute[inner] else copyRoute[inner + 1]
+                var currentDistance = currentStop.getDistance(nextStop!!)
+                if (minDist == 0.0F) minDist = currentDistance else {
+                    if (minDist > currentDistance) {
+                        minDist = currentDistance
+                        if (!resultRoute.contains(nextStop)) {
+                            resultRoute.add(nextStop!!)
+                        }
+                    } else {
+                        if (currentDistance > minDist && resultRoute.contains(nextStop)) minDist = 0.0F
+                    }
+                }
+            }
+            minDist = 0.0F
+        }
+        resultRoute.add(last)
+        return resultRoute
     }
 
     fun BusStopWithWeightDto.getDistance(firstStop: BusStopWithWeightDto): Float =
@@ -42,7 +76,7 @@ class CoordinatesWriterJson {
 
             wrapper2.add(mutableListOf(firstStop.prepareX(), firstStop.prepareY()))
             it.prepareToWrite().forEach { busStop ->
-                wrapper2.add(mutableListOf(busStop.prepareX(), busStop.prepareY()))
+                wrapper2.add(mutableListOf(requireNotNull(busStop?.prepareX()), requireNotNull(busStop?.prepareY())))
             }
             wrapper2.add(mutableListOf(lastStop.prepareX(), lastStop.prepareY()))
             wrapper.add(wrapper2)

@@ -6,7 +6,8 @@ import bmstu.configuration.Constraint.Companion.ROUTE_SIZE
 import bmstu.dto.entity.BusStopFromDbWithWeight
 import bmstu.support.BusStopFunClass
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.LinkedList
+import java.util.Random
 
 @Service
 class RoutesBuilder(
@@ -27,7 +28,6 @@ class RoutesBuilder(
             weight = requireNotNull(this.weight)
         )
 
-
     fun getRandomBusStops(): List<BusStopWithWeightDto> {
         val randomBusStops = mutableSetOf<BusStopFromDbWithWeight>()
         val allBusStops = busStopFunClass.getAllBusStopWithWeight()
@@ -47,12 +47,13 @@ class RoutesBuilder(
     ): LinkedList<BusStopWithWeightDto> {
         val route = LinkedList<BusStopWithWeightDto>()
         route.add(start)
-        busStopDtos.shuffled()
-            .take(ROUTE_SIZE).forEach {
-            if (!(it == start && it == finish)) route.add(it)
+        (0 until ROUTE_SIZE - 2).onEach {
+            val random = Random()
+            val num = random.nextInt(busStopDtos.size - 1)
+            val busStop = busStopDtos.shuffled()[num]
+            if (!(busStop == start && busStop == finish)) route.add(busStop)
         }
         route.add(finish)
-        println(route.size)
         return route
     }
 
